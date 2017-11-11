@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import json
-from urllib import urlopen
+#from urllib import urlopen
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, request
-#from urllib.request import urlopen, Request
-
-#link https://python--bergpb.c9users.io/api/moedas
+from urllib.request import urlopen, Request
 
 app = Flask(__name__)
 
