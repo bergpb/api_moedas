@@ -8,7 +8,7 @@ from urllib.request import urlopen, Request
 
 app = Flask(__name__)
 
-@app.route('/api/moedas', methods=['GET'])
+@app.route('/api/v1/moedas', methods=['GET'])
 
 def getCoins():
   i = 0
