@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 import json
-#from urllib import urlopen
+import cfscrape
 from bs4 import BeautifulSoup
-from flask import Flask, jsonify, request
-from urllib.request import urlopen, Request
+from flask import Flask, jsonify, request, Response
+
+scraper = cfscrape.create_scraper()
 
 app = Flask(__name__)
 
@@ -12,22 +13,25 @@ app = Flask(__name__)
 
 def getCoins():
   i = 0
-  
-  html_doc = urlopen("https://mercadocotacao.com").read()
-  
-  soup = BeautifulSoup(html_doc, "html.parser")
-  
+
+  data = []
+
   coin = ['dolar','dolar_tur_c','dolar_tur_v',
           'euro','bitcoin','libra','peso_argentino']
-  
-  data = []
-  
+
+  html_doc = scraper.get("https://mercadocotacao.com").content
+
+  soup = BeautifulSoup(html_doc, "html.parser")
+
   for dataBox in soup.find_all("div", class_="frente bug"):
     moedas = dataBox.find("span")
     data.append({coin[i]: moedas.text.strip()})
     i = i+1
-    
-  return json.dumps({'moedas': data}, indent=2, sort_keys=True)
+
+  return Response(
+    json.dumps({'moedas': data}),
+    mimetype='application/json'
+  )
 
 
 if __name__ == '__main__':
